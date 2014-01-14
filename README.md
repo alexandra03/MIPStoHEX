@@ -22,8 +22,11 @@ Takes an entire program in MIPS (reduced instruction set) and converts it to hex
 	- LW 
 	- SW 
 	
-Example input (commas and single spaces must be as shown, and one command per line): 
+	Example input (commas and single spaces must be as shown, and one command per line): 
 	add $3, $2, $0
 	beq $3, $0, 1
 	add $2, $0, $0
 	jr $31
+
+Usage:
+Write MIPS program in a .txt file, and run "python MIPStoHEX.py myfile.txt > myHexFile.hex"
