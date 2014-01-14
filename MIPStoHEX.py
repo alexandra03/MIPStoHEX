@@ -1,28 +1,23 @@
 '''
+	########################################################################################
 	
 	MIPS to Hex converter
 
 	Takes an entire program in MIPS (reduced instruction set) and converts it
 	to hexadecimal for use in the CS241 MIPS simulator.
 
-
 	Written by Alexandra Sunderland
 	January 13th 2014
 
+	########################################################################################
+
 	Includes support for the following MIPS instructions:
-	- .word 
-	- ADD 
-	- SUB 
-	- LIS 
-	- SLT 
-	- SLTU 
-	- BEQ 
-	- BNE 
-	- JR  
+	- .word   - SLT    - BNE
+	- ADD     - SLTU   - JR
+	- SUB     - BEQ    - LIS
 
 	To be added: 
-	- LW 
-	- SW 
+	- LW / SW
 
 	
 	Example input (commas and single spaces must be as shown, and one command per line): 
@@ -31,7 +26,19 @@
 	add $2, $0, $0
 	jr $31
 
+	Output:
+	.word 0x401820
+	.word 0x10600001
+	.word 0x1020
+	.word 0x3e00008
+
+
+	USAGE:
+		python MIPStoHEX.py myMips.txt > myHex.hex    => To convert an entire file
+		python MIPStoHEX.py 						  => Enters command-line mode to convert
+														 one line at a time
 '''
+
 import sys
 
 # Turns an integer into a binary string of the given length
@@ -107,12 +114,25 @@ def mipsToBinary(mipsCommand):
 
 
 def main():
-	f=open(sys.argv[1],'r') # Opens the file passed in as an argument
-	for line in f:
-		try:
-			mipsToBinary(line)
-		except:
-			print "Error in line, could not convert"
+	# Use the file passed in as an argument as the input
+	if len(sys.argv) > 1:
+		f=open(sys.argv[1],'r') 
+		for line in f:
+			try:
+				mipsToBinary(line)
+			except:
+				print "Error in line, could not convert"
+
+	# Enter one instruction at a time
+	else:
+	    line = raw_input("Enter a MIPS instruction:\t\t'q' to quit\n")
+
+	    while line not in ['q', 'Q', 'quit', 'Quit']:
+	        try:
+	            mipsToBinary(line)
+	        except:
+	            print "Error in line, could not convert"
+	        line = raw_input("Enter a MIPS instruction:\n")
 
 
 if __name__=="__main__":
